@@ -47,6 +47,7 @@
       width: 122px;
     }
   </style>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 </head>
 
 <body>
@@ -54,7 +55,7 @@
     <form>
       <fieldset>
         <legend>Error Calculator</legend>
-        <input name="first-num" id="first-num" />
+        <input name="first-num" id="first-num"/>
         <select name="operator" id="operator">
           <option>+</option>
           <option>-</option>
@@ -88,13 +89,47 @@
   </main>
 
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "6f8bc6b10f374a4cbf872f6052c4632a"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
+      /* *
+      * Step 3
+      * */
+      try {
+        if(isNaN(firstNum)) {
+          throw new SyntaxError('First input needs to be a number.');
+        }
+      } catch(err) {
+        throw(err);
+      } finally {
+        console.log('Remember: number inputs only!')
+      }
       let secondNum = document.querySelector('#second-num').value;
+      /* *
+      * Step 4
+      * */
+      class SecondInputError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "SecondInputError";
+        }
+      }
+      try {
+        if(isNaN(secondNum)) {
+          throw new SecondInputError('Second input needs to be a number.');
+        }
+      } catch(err) {
+        throw(err);
+      }
       let operator = document.querySelector('#operator').value;
+      
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
@@ -102,6 +137,101 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    
+    /* *
+    * Step 2
+    * */
+
+    // console.log
+    errorBtns[0].addEventListener('click', (event) => {
+      console.log('Console Log Demo');
+    });
+    // console.error
+    errorBtns[1].addEventListener('click', (event) => {
+      console.error('Console Error Demo');
+    });
+    // console.count
+    errorBtns[2].addEventListener('click', (event) => {
+      console.count('Console Button');
+    });
+    // console.warn
+    errorBtns[3].addEventListener('click', (event) => {
+      console.warn('Console Warn Button');
+    });
+    // console.assert
+    errorBtns[4].addEventListener('click', (event) => {
+      let x = 3;
+      let y = 1;
+      console.assert(x == y, {x, y, reason: 'x and y are expected to be the same'});
+    });
+    // console.clear
+    errorBtns[5].addEventListener('click', (event) => {
+      console.clear();
+    });
+    // console.dir
+    errorBtns[6].addEventListener('click', (event) => {
+      console.dir(errorBtns[6]);
+    });
+    // console.dirxml
+    errorBtns[7].addEventListener('click', (event) => {
+      console.dirxml(errorBtns[7]);
+    });
+    // console.group
+    errorBtns[8].addEventListener('click', (event) => {
+      console.group();
+    });
+    // console.groupend
+    errorBtns[9].addEventListener('click', (event) => {
+      console.groupEnd();
+    });
+    // console.table
+    errorBtns[10].addEventListener('click', (event) => {
+      console.table([
+        {
+          department: 'CSE',
+          courseNumber: '110',
+        },
+        {
+          department: 'CSE',
+          courseNumber: '101',
+        },
+        {
+          department: 'CAT',
+          courseNumber: '125R',
+        },
+        {
+          department: 'PSYC',
+          courseNumber: '88',
+        }
+      ]);
+    });
+    // console.time
+    errorBtns[11].addEventListener('click', (event) => {
+      console.time();
+    });
+    // console.timeend
+    errorBtns[12].addEventListener('click', (event) => {
+      console.timeEnd();
+    });
+    // console.trace
+    errorBtns[13].addEventListener('click', (event) => {
+      const brainstorm = () => { getIdea(); };
+      const getIdea = () => { createPitch(); };
+      const createPitch = () => { createProto(); };
+      const createProto = () => { keepGoing(); };
+      const keepGoing = () => { console.trace(); };
+      brainstorm();
+    });
+    /* *
+    * Step 5
+    * */
+    // window.onerror
+    window.onerror = function(message, source, line, column, error) {
+        console.log("There seems to be an issue here fren.");
+      };
+    errorBtns[14].addEventListener('click', (event) => {
+      cnsole.log('I love CSE 110.'); //...spelling is hard
+    });
   </script>
 </body>
 
