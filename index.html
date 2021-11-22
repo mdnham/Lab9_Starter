@@ -54,7 +54,7 @@
     <form>
       <fieldset>
         <legend>Error Calculator</legend>
-        <input name="first-num" id="first-num" />
+        <input name="first-num" id="first-num"/>
         <select name="operator" id="operator">
           <option>+</option>
           <option>-</option>
@@ -96,13 +96,32 @@
       /* *
       * Step 3
       * */
-      // try
-      // {
-      //   if(typeof(firstNum) == "number") {}
-      // } catch(err) {
-
-      // }
+      try {
+        if(isNaN(firstNum)) {
+          throw new SyntaxError('First input needs to be a number.');
+        }
+      } catch(err) {
+        throw(err);
+      } finally {
+        console.log('Remember: number inputs only!')
+      }
       let secondNum = document.querySelector('#second-num').value;
+      /* *
+      * Step 4
+      * */
+      class SecondInputError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "SecondInputError";
+        }
+      }
+      try {
+        if(isNaN(secondNum)) {
+          throw new SecondInputError('Second input needs to be a number.');
+        }
+      } catch(err) {
+        throw(err);
+      }
       let operator = document.querySelector('#operator').value;
       
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
@@ -201,10 +220,10 @@
     * Step 5
     * */
     // window.onerror
-    errorBtns[14].addEventListener('click', (event) => {
-      window.onerror = function(message, source, line, column, error) {
-        console.log("Wait, where's my message?");
+    window.onerror = function(message, source, line, column, error) {
+        console.log("There seems to be an issue here fren.");
       };
+    errorBtns[14].addEventListener('click', (event) => {
       cnsole.log('I love CSE 110.'); //...spelling is hard
     });
   </script>
